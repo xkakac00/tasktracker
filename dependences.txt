@@ -1,0 +1,16 @@
+sudo apt-get update && sudo apt-get upgrade -y
+# Instalace pythonu, pip (spravce balicku pro py) a python virtualniho prostedi
+sudo apt-get install python3 python3-pip python3-venv  
+# Aktivace virtualniho prostredi
+python3 -m venv venv
+source venv/bin/activate
+# Instalace python knihoven pro TaskTracker
+pip install fastapi uvicorn
+pip install sqlalchemy
+pip install pydantic
+pip install pytest
+
+# nebo staci nainstalovat vse z tohoto souboru
+pip freeze > requirements.txt 
+pip install -r requirements.txt
+
