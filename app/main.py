@@ -1,11 +1,19 @@
 # FastAPI je moderní webový framework pro Python, který umožňuje snadno vytvářet API.
-from fastapi import FastAPI
+from fastapi import FastAPI,Depends, HTTPException
+from sqlalchemy.orm import Session
 # Pydantic je knihovna pro validaci dat a serializaci
 from pydantic import BaseModel
-from . import models, database
+from . import models, database, schemas
 
 app = FastAPI(title="Task Tracker")
 models.Base.metadata.create_all(bind=database.engine)
+
+def get_db():
+    db = database.SessionLocal()
+    try:
+        yield db
+    finally:
+        db.close()
 
 # definice endpointu
 @app.get("/")
@@ -19,7 +27,7 @@ def create_tasks(task:schemas.TaskCreate, db:Session=Depends(get_db)):
     db_task=models.Task(title=task.title,description=task.description)
     db.add(db_task)
     db.commit()
-    db.refresh(db.task)
+    db.refresh(db_task)
     return db_task
 
 @app.get("/tasks", response_model=list[schemas.Task])
@@ -28,9 +36,3 @@ def list_tasks(db:Session = Depends(get_db)):
     # vracení seznamu všech tasků
     return db.query(models.Task).all()
     
-def get_db():
-    db = database.SessionLocal()
-    try:
-        yield db
-    finally:
-        db.close()

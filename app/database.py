@@ -1,7 +1,9 @@
+# Nastaveni spojeni s databazi 
+
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, declarative_base
 
-SQLALCHEMY_DATABASE_URL = "sqlite:///.tasktracker.db"
+SQLALCHEMY_DATABASE_URL = "sqlite:///tasktracker.db"
 
 # Vytvoreni motoru, ktery bude mluvit s SQL databazi
 engine = create_engine (
