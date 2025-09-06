@@ -13,6 +13,10 @@ class Task(TaskBase):
     id:int
     model_config = ConfigDict(from_attributes=True)
 
-
+class TaskUpdate(BaseModel):
+    # Pokud neni zmena, plati puvodni (none)
+    title:str | None = None 
+    description: str | None = None
+    
 
       
